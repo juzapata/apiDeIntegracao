@@ -1,0 +1,28 @@
+{
+  "name": "api-integracao",
+  "version": "1.0.0",
+  "description": "Api RESTFUL de integração entre Pipedrive e Bling",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/juzapata/apiDeIntegracao.git"
+  },
+  "author": "Júlia Zapata",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/juzapata/apiDeIntegracao/issues"
+  },
+  "homepage": "https://github.com/juzapata/apiDeIntegracao#readme",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
