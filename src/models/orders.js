@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-
+// contrução do modelo pro Mongo
 const OrderSchema = new Schema({
   cliente: {
       id: Number,
@@ -33,28 +33,3 @@ const OrderSchema = new Schema({
 const Orders = mongoose.model('Orders', OrderSchema);
 
 module.exports = Orders;
-
-// {
-//    "cliente": {
-//       "nome": "String"
-//    },
-//    "transporte": {
-//       "volumes": {
-//          "volume": {
-//             "servico": "String"
-//          }
-//       }
-//    },
-//    "itens": {
-//       "item": {
-//          "descricao": "String",
-//          "qtde": "Decimal",
-//          "vlr_unit": "Decimal"
-//       }
-//    },
-//    "parcelas": {
-//       "parcela": {
-//          "vlr": "decimal"
-//       }
-//    }
-// }
