@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const mongoose = require('mongoose');
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 
 mongoose.connect('mongodb+srv://ju_zapata:rBErUVPN2Udug6bC@cluster0-suwoq.mongodb.net/test?retryWrites=true&w=majority', {

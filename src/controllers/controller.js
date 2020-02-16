@@ -76,7 +76,7 @@ router.get('/getDeals', async (req, res) => {
                             }
                         }
                         );
-                        
+
                     }
                 });
             })
