@@ -1,53 +1,33 @@
 // model dos deals que vamos colocar no Mongo
-const mongoose = require('../server');
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const OrderSchema = new mongoose.Schema({
-    order: {
-        cliente: {
-           nome: {
-               type: String, // nome: Nintendo
-               required: true
-            }
-        },
-        transporte: {
-           volumes: {
-              volume: {
-                 servico: {
-                     type: String, // email da pessoa
-                     required: true
-                 }
-              }
-           }
-        },
-        itens: {
-           item: {
-              descricao: {
-                 type: String, ///Switch
-                 required: true
-              },
-              qtde: {
-                 type: Number, //decimal
-                 required: true
-              },
-              vlr_unit: {
-                type: Number,
-                required: true
-              }
-           }
-        },
-        parcelas: {
-           parcela: {
-              vlr: {
-                type: Number,
-                required: true
-              }
-           }
+
+const OrderSchema = new Schema({
+  cliente: {
+      id: Number,
+      nome: String
+    },
+    transporte: {
+      volumes: {
+        volume: {
+          servico: String
         }
-     },
-    createdAt: {
-        type: Date,
-        default: Date.now
+      }
+    },
+    itens: {
+      item: {
+        descricao: String,
+        qtde: Number,
+        vlr_unit: Number
+      }
+    },
+    parcelas: {
+      parcela: {
+        vlr: Number
+      }
     }
+  
 })
 
 const Orders = mongoose.model('Orders', OrderSchema);

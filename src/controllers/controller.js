@@ -1,57 +1,78 @@
 const express = require('express');
 const pipedriveApi = require('../services/pipedrive');
-const axios = require('axios');
+const Orders = require('../models/orders');
+
+
+
 const router = express.Router()
 
 
 router.get('/getDeals', async (req, res) => {
     try {
+        // fazendo a primeira requisição para recuperar os deals com status won
         const deals = await pipedriveApi.getDeals();
-        
-        let alDeals = deals.data.data.map(el => {
+        let allDeals = deals.data.data
+        // recuperando os ids de cada deal
+        let idDeals = allDeals.map(el => {
             return el.id
         })
-        let arrayOfReq = await pipedriveApi.getProductsOfDeal(alDeals);
+        // fazendo a segunda requisição para recuperar os produtos de cada deal, através de seu id
+        let arrayOfReq = await pipedriveApi.getProductsOfDeal(idDeals);
         let bubu = await Promise.all(arrayOfReq)
-        console.log('BUBU', bubu[0]);
-        obj = {
-            "cliente": {
-                "nome": "" //nintendo
-            },
-            "transporte": {
-                "volumes": {
-                    "volume": {
-                        "servico": "" //email da pessoa
+        let arrayOfOrders = [];
+        // loopings para formar o objeto do pedido que será enviado para o Mongo Atlas
+        await allDeals.forEach(async deals => {
+            bubu.forEach(async products => {
+                await products.data.data.forEach(async singleProduct => {
+                    if (singleProduct.deal_id === deals.id) {
+                        await Orders.create({
+                            "cliente": {
+                                "id": deals.id,
+                                "nome": deals.org_id.name
+                            },
+                            "transporte": {
+                                "volumes": {
+                                    "volume": {
+                                        "servico": deals.person_id.email[0].value
+                                    }
+                                }
+                            },
+                            "itens": {
+                                "item": {
+                                    "descricao": singleProduct.name,
+                                    "qtde": singleProduct.quantity,
+                                    "vlr_unit": singleProduct.item_price
+                                }
+                            },
+                            "parcelas": {
+                                "parcela": {
+                                    "vlr": singleProduct.sum
+                                }
+                            }
+                        }
+                        )
                     }
-                }
-            },
-            "itens": {
-                "item": {
-                    "descricao": "", // Switch
-                    "qtde": 0, 
-                    "vlr_unit": 0
-                }
-            },
-            "parcelas": {
-                "parcela": {
-                    "vlr": 0 // valor total
-                }
-            }
-        }
+                })
+            })
+        });
 
 
-        // pegar o nome do produto
-        // let namesOfProducts = await bubu.map(name => bubu.data)
-        // console.log(bubu[0]);
-        // mandar em JSON usando o model pro Mongo Atlas
-        // mandar pro bling me XML
-        // retornar a colletion 
-        // console.log('DEAL TWO', dealsTwo)
-        return res.send({ "resultado": bubu[0].data }); // aqui, também colocamos o token de autenticação para quando novo usuário se cadastrar, ele também receber o token 
+        return res.status(200).send({ success: true, result: 'Dados foram enviados para o mongo' });
     } catch (error) {
-        return res.json({ error });
+        return res.status(400).json({ success: false, result: error });
     }
 });
+
+router.get('/getOrders', async (req, res) => {
+    try {
+        let result = await Orders.find();
+        return res.status(200).send({success: true, result: result});
+    } catch (err) {
+        return res.status(400).send({ success: false, result: err})
+    }
+});
+
+
 module.exports = app => app.use('/business', router);
 
 
