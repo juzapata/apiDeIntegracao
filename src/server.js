@@ -14,7 +14,6 @@ mongoose.connect('mongodb+srv://ju_zapata:rBErUVPN2Udug6bC@cluster0-suwoq.mongod
     console.log('Conectado com a base de dados...');
 }).catch(err => console.log(err));
 
-// rBErUVPN2Udug6bC
 require('./controllers/controller')(app);
 
 app.listen(3000, () => console.log("Servidor começou na porta 3000..."));

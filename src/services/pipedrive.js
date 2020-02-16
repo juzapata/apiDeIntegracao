@@ -1,8 +1,6 @@
 // request da API do Pipedrive
 const axios = require('axios');
 
-
-
 async function getDeals() {
   try {
     const dealUrl = 'https://api.pipedrive.com/v1/deals?status=won&start=0&api_token=4750e1f9d9183fe5e94a0e1925dbf59d2d0a6646';
